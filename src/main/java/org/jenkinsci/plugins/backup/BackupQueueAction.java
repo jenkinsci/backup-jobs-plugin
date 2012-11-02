@@ -5,12 +5,14 @@
 package org.jenkinsci.plugins.backup;
 
 import hudson.Extension;
+import hudson.model.Describable;
+import hudson.model.Descriptor;
 import hudson.model.RootAction;
-import hudson.model.View;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import jenkins.model.Jenkins;
-import org.jenkinsci.plugins.backup.QueueBackUp.QueueBackUpDescriptor;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 
@@ -19,8 +21,7 @@ import org.kohsuke.stapler.StaplerResponse;
  * @author lucinka
  */
 @Extension
-public class BackupQueueAction implements RootAction{
-    
+public class BackupQueueAction implements RootAction, Describable<BackupQueueAction>{
     private QueueBackUpDescriptor backup;
     
     private transient String problems;
@@ -29,11 +30,14 @@ public class BackupQueueAction implements RootAction{
     public BackupQueueAction(){
         backup = new QueueBackUpDescriptor();
         backup.load();
-        backup.scheduleJobAgain();
+    }
+    
+    public QueueBackUpDescriptor getBackup(){
+        return backup;
     }
 
     public String getIconFileName() {
-        return "lock.png";
+        return "save.png";
     }
 
     public String getDisplayName() {
@@ -52,12 +56,36 @@ public class BackupQueueAction implements RootAction{
         return problems;
     }
     
-    public void doIndex(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
+    public void doRuns(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
+        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
+        backup.scheduleJobAgain();
+        res.forwardToPreviousPage(req);
+        
+    }
+    
+    public void doQueue(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
+        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
+        backup.restoreQueue();
+        res.forwardToPreviousPage(req);
+    }
+    
+    public void doProblems(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
+        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
+        req.getView(this, "problem.jelly").forward(req, res);
+    }
+    
+    public void doOverview(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
+        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
+        req.getView(this, "overview.jelly").forward(req, res);
+    }
+    
+    public void doBackup(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
+        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
         try{
             problems = backup.prepareOnRestart();
-            backup.save();
         }
         catch(Exception e){
+            Logger.getLogger(getClass().getName()).log(Level.WARNING, null, e);
             String message = "Exception " + e.getClass().getName() + " was thrown during interrupting and saving running jobs\n" + e.getMessage();
             if(problems !=null){
                 problems = problems + message;
@@ -67,11 +95,16 @@ public class BackupQueueAction implements RootAction{
             }
         }
         if(problems==null){
+            System.out.println("problem null");
             res.forwardToPreviousPage(req);
         }
         else{
-            req.getView(this, "index.jelly");
+            req.getView(this, "problem.jelly");
         }
+    }
+
+    public Descriptor<BackupQueueAction> getDescriptor() {
+        return backup;
     }
     
 }

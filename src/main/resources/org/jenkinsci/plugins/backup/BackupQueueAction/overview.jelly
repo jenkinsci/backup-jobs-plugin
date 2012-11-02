@@ -23,11 +23,18 @@ THE SOFTWARE.
 -->
 
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
- 
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:x="jelly:xml" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
  <l:layout permission="${app.ADMINISTER}" title="${it.displayName}">
      <st:include page="sidepanel.jelly" />
     <l:main-panel>
+        <h3>Running jobs</h3>
+        <j:forEach var="run" items="${it.getBackup().getRunningJobs()}">
+            <a href="${app.getRootUrl()}${run.getJob().getUrl()}">${run.getJob().getDisplayName()}</a>
+        </j:forEach>
+        <h3>Jobs in queue</h3>
+        <j:forEach var="job" items="${it.getBackup().getJobsInQueue()}">
+            <a href="${rootURL}${job.getJob().getUrl()}">${job.getJob().getDisplayName()}</a>
+        </j:forEach>
     </l:main-panel>
   </l:layout>
 </j:jelly>

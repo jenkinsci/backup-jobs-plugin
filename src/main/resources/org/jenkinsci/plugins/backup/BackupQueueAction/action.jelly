@@ -24,10 +24,5 @@ THE SOFTWARE.
 
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
- 
- <l:layout permission="${app.ADMINISTER}" title="${it.displayName}">
-     <st:include page="sidepanel.jelly" />
-    <l:main-panel>
-    </l:main-panel>
-  </l:layout>
+    <l:task icon="images/24x24/save.png" href="${h.getActionUrl(it.url,action)}" title="${action.getDisplayName()}" permission="${app.ADMINISTER}"/>
 </j:jelly>

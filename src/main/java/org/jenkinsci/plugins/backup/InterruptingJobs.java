@@ -4,22 +4,16 @@
  */
 package org.jenkinsci.plugins.backup;
 
-import hudson.model.AbstractBuild;
+
 import hudson.model.AbstractProject;
 import hudson.model.Executor;
-import hudson.model.Item;
 import hudson.model.ParametersAction;
-import hudson.model.Queue.Executable;
-
 import hudson.model.Run;
-import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletException;
 import jenkins.model.Jenkins;
 
 /**
