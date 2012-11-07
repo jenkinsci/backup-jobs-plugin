@@ -8,21 +8,23 @@ import hudson.matrix.MatrixConfiguration;
 import hudson.model.AbstractProject;
 import hudson.model.Cause;
 import hudson.model.Item;
+import hudson.model.Job;
 import hudson.model.ParametersAction;
 
+import hudson.model.Project;
 import jenkins.model.Jenkins;
 
 /**
  *
- * @author lucinka
+ * @author Lucie Votypkova
  */
 public class JobInformation {
     
-    private String name;
+    private Job job;
     private ParametersAction parameters;
     
-    public JobInformation(String name, ParametersAction parameters){
-        this.name= name;
+    public JobInformation(Job job, ParametersAction parameters){
+        this.job= job;
         this.parameters = parameters;
     }
     
@@ -30,21 +32,16 @@ public class JobInformation {
         return parameters==null;
     }
     
-    public String getName(){
-        return name;
+    public Job getJob(){
+        return job;
     }
         
-    public Item getJob(){
-        return Jenkins.getInstance().getItem(name);
-    }
-    
     public ParametersAction getParameters(){
         return parameters;
     }
     
     public void scheduleJobAgain(){
-        Item item = getJob();
-        if(item instanceof AbstractProject && !(item instanceof MatrixConfiguration)){ //matrix configuration will be shechuled by matrix job
+        if(job instanceof AbstractProject && !(job instanceof MatrixConfiguration)){ //matrix configuration will be shechuled by matrix job
             Cause cause = new Cause() {
 
                 @Override
@@ -53,23 +50,23 @@ public class JobInformation {
                 }
             };
             if(parameters==null){
-                ((AbstractProject)item).scheduleBuild(cause);
+                ((AbstractProject)job).scheduleBuild(cause);
             }
             else{
-               ((AbstractProject)item).scheduleBuild(0, cause, parameters);
+               ((AbstractProject)job).scheduleBuild(0, cause, parameters);
             }
         }
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return job.hashCode();
     }
     
     @Override
     public boolean equals(Object object){
         if(object instanceof JobInformation)
-            return ((JobInformation)object).getName().equals(name);
+            return ((JobInformation)object).getJob().getDisplayName().equals(job.getDisplayName());
         return false;
     }
 }

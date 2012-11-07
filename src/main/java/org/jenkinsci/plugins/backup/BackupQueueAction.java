@@ -9,6 +9,8 @@ import hudson.model.Describable;
 import hudson.model.Descriptor;
 import hudson.model.RootAction;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -18,23 +20,12 @@ import org.kohsuke.stapler.StaplerResponse;
 
 /**
  *
- * @author lucinka
+ * @author Lucie Votypkova
  */
 @Extension
-public class BackupQueueAction implements RootAction, Describable<BackupQueueAction>{
-    private QueueBackUpDescriptor backup;
+public class BackupQueueAction implements RootAction{
     
-    private transient String problems;
-    
-    
-    public BackupQueueAction(){
-        backup = new QueueBackUpDescriptor();
-        backup.load();
-    }
-    
-    public QueueBackUpDescriptor getBackup(){
-        return backup;
-    }
+    private transient String problems;      
 
     public String getIconFileName() {
         return "save.png";
@@ -45,7 +36,7 @@ public class BackupQueueAction implements RootAction, Describable<BackupQueueAct
     }
 
     public String getUrlName() {
-        return "backup";
+        return "reschedule";
     }
     
     public boolean hasProblems(){
@@ -56,55 +47,25 @@ public class BackupQueueAction implements RootAction, Describable<BackupQueueAct
         return problems;
     }
     
-    public void doRuns(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
+    public void doIndex(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
         Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
-        backup.scheduleJobAgain();
-        res.forwardToPreviousPage(req);
-        
-    }
-    
-    public void doQueue(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
-        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
-        backup.restoreQueue();
-        res.forwardToPreviousPage(req);
-    }
-    
-    public void doProblems(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
-        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
-        req.getView(this, "problem.jelly").forward(req, res);
-    }
-    
-    public void doOverview(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
-        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
-        req.getView(this, "overview.jelly").forward(req, res);
-    }
-    
-    public void doBackup(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
-        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
-        try{
-            problems = backup.prepareOnRestart();
-        }
-        catch(Exception e){
-            Logger.getLogger(getClass().getName()).log(Level.WARNING, null, e);
-            String message = "Exception " + e.getClass().getName() + " was thrown during interrupting and saving running jobs\n" + e.getMessage();
-            if(problems !=null){
-                problems = problems + message;
-            }
-            else{
-                problems = message;
-            }
-        }
-        if(problems==null){
-            System.out.println("problem null");
+        if(prepareOnRestart()){
             res.forwardToPreviousPage(req);
         }
         else{
-            req.getView(this, "problem.jelly");
+            req.getView(this, "problem.jelly").forward(req, res);
         }
     }
 
-    public Descriptor<BackupQueueAction> getDescriptor() {
-        return backup;
-    }
+    public boolean prepareOnRestart(){
+            Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
+            List<JobInformation> runningJobs = new ArrayList<JobInformation>();
+            InterruptingJobs interruption = new InterruptingJobs();
+            runningJobs.addAll(interruption.interruptAllRuns());
+            for(JobInformation job: runningJobs)
+                job.scheduleJobAgain();
+             problems = interruption.getErrorMessage();
+             return problems==null;
+        }
     
 }

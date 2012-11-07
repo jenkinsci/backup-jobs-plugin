@@ -18,7 +18,7 @@ import jenkins.model.Jenkins;
 
 /**
  *
- * @author lucinka
+ * @author Lucie Votypkova
  */
 public class InterruptingJobs {
     
@@ -55,7 +55,7 @@ public class InterruptingJobs {
                 Run run = iterator.next();
                 if(run.isBuilding()){
                     ParametersAction action = run.getAction(ParametersAction.class);
-                    JobInformation info = new JobInformation(run.getParent().getDisplayName(),action);
+                    JobInformation info = new JobInformation(run.getParent(),action);
                     projects.add(info);
                     if(!interruptBuild(run)){
                         String error = "Build " + run.getNumber() + " of job " + run.getParent().getDisplayName() + " is not able interrupt\n";
