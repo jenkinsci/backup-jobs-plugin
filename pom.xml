@@ -7,11 +7,12 @@
   </parent>
 
   <groupId>jenkins.ci.plugins.backup</groupId>
-  <artifactId>backup-plugin</artifactId>
+  <artifactId>backup-interrupt-plugin</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
   <description>Back up and restore runing jobs</description>
-  <name>Backup pluign</name>
+  <name>Backup and interrupt job pluign</name>
+  <url>https://wiki.jenkins-ci.org/display/JENKINS/Backup+and+interrupt+running+job+plugin</url>
   
   <developers>
     <developer>
@@ -52,5 +53,11 @@
       <url>http://repo.jenkins-ci.org/public/</url>
     </pluginRepository>
   </pluginRepositories>
+  
+    <scm>
+    <connection>scm:git:ssh://github.com/jenkinsci/backup-jobs-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/backup-jobs-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/backup-jobs-plugin</url>
+  </scm>
   
 </project>

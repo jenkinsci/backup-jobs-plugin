@@ -32,7 +32,7 @@ public class BackupQueueAction implements RootAction{
     }
 
     public String getDisplayName() {
-        return "Backup queue and running jobs";
+        return "Interrupt and reschedule running jobs";
     }
 
     public String getUrlName() {
