@@ -8,7 +8,7 @@
 
   <groupId>jenkins.ci.plugins.backup</groupId>
   <artifactId>backup-interrupt-plugin</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>hpi</packaging>
   <description>Back up and restore runing jobs</description>
   <name>Backup and interrupt job pluign</name>
