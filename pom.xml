@@ -9,18 +9,10 @@
 
   <groupId>jenkins.ci.plugins.backup</groupId>
   <artifactId>backup-interrupt-plugin</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>${changelist}</version>
   <packaging>hpi</packaging>
   <name>Backup and interrupt job plugin</name>
   <url>https://plugins.jenkins.io/backup-interrupt-plugin/</url>
-  
-  <developers>
-    <developer>
-      <id>lvotypko</id>
-      <name>Lucie Votypkova</name>
-      <email>lvotypko@redhat.com</email>
-    </developer>
-  </developers>
 
   <licenses>
     <license>
@@ -69,6 +61,7 @@
   </dependencies>
 
   <properties>
+    <changelist>999999-SNAPSHOT</changelist>
     <jenkins.version>2.346.1</jenkins.version>
   </properties>
   
@@ -76,6 +69,7 @@
     <connection>scm:git:https://github.com/jenkinsci/backup-jobs-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/jenkinsci/backup-jobs-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/backup-jobs-plugin</url>
+    <tag>${scmTag}</tag>
   </scm>
   
 </project>
