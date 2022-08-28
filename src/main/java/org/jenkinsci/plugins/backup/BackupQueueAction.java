@@ -28,7 +28,7 @@ public class BackupQueueAction implements RootAction{
     private transient String problems;      
 
     public String getIconFileName() {
-        return "save.png";
+        return "symbol-save-outline plugin-ionicons-api";
     }
 
     public String getDisplayName() {
@@ -48,7 +48,7 @@ public class BackupQueueAction implements RootAction{
     }
     
     public void doIndex(StaplerRequest req, StaplerResponse res) throws ServletException, IOException{
-        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
+        Jenkins.get().checkPermission(Jenkins.ADMINISTER);
         if(prepareOnRestart()){
             res.forwardToPreviousPage(req);
         }
@@ -58,10 +58,9 @@ public class BackupQueueAction implements RootAction{
     }
 
     public boolean prepareOnRestart(){
-            Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
-            List<JobInformation> runningJobs = new ArrayList<JobInformation>();
-            InterruptingJobs interruption = new InterruptingJobs();
-            runningJobs.addAll(interruption.interruptAllRuns());
+            Jenkins.get().checkPermission(Jenkins.ADMINISTER);
+        InterruptingJobs interruption = new InterruptingJobs();
+        List<JobInformation> runningJobs = new ArrayList<JobInformation>(interruption.interruptAllRuns());
             for(JobInformation job: runningJobs)
                 job.scheduleJobAgain();
              problems = interruption.getErrorMessage();

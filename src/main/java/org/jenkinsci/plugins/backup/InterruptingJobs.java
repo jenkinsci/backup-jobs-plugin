@@ -4,13 +4,11 @@
  */
 package org.jenkinsci.plugins.backup;
 
-
 import hudson.model.AbstractProject;
 import hudson.model.Executor;
 import hudson.model.ParametersAction;
 import hudson.model.Run;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,15 +47,13 @@ public class InterruptingJobs {
     public List<JobInformation> interruptAllRuns(){
         StringBuilder builder = new StringBuilder();
         List<JobInformation> projects = new ArrayList<JobInformation>();
-        for(AbstractProject project: Jenkins.getInstance().getAllItems(AbstractProject.class)){
-            Iterator<Run> iterator = project.getBuilds().iterator();
-            while(iterator.hasNext()){
-                Run run = iterator.next();
-                if(run.isBuilding()){
+        for(AbstractProject project: Jenkins.get().getAllItems(AbstractProject.class)){
+            for (Run run : (Iterable<Run>) project.getBuilds()) {
+                if (run.isBuilding()) {
                     ParametersAction action = run.getAction(ParametersAction.class);
-                    JobInformation info = new JobInformation(run.getParent(),action);
+                    JobInformation info = new JobInformation(run.getParent(), action);
                     projects.add(info);
-                    if(!interruptBuild(run)){
+                    if (!interruptBuild(run)) {
                         String error = "Build " + run.getNumber() + " of job " + run.getParent().getDisplayName() + " is not able interrupt\n";
                         builder.append(error);
                         Logger.getLogger(getClass().getName()).log(Level.WARNING, error);

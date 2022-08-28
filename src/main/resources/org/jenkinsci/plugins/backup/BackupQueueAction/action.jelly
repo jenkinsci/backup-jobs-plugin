@@ -1,4 +1,4 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
-    <l:task icon="images/24x24/save.png" href="${h.getActionUrl(it.url,action)}" title="${action.getDisplayName()}" permission="${app.ADMINISTER}"/>
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
+    <l:task icon="symbol-save-outline plugin-ionicons-api" href="${h.getActionUrl(it.url,action)}" title="${action.getDisplayName()}" permission="${app.ADMINISTER}"/>
 </j:jelly>

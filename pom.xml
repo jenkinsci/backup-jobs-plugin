@@ -3,16 +3,16 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>1.447</version>
+    <version>4.47</version>
+    <relativePath />
   </parent>
 
   <groupId>jenkins.ci.plugins.backup</groupId>
   <artifactId>backup-interrupt-plugin</artifactId>
   <version>1.1-SNAPSHOT</version>
   <packaging>hpi</packaging>
-  <description>Back up and restore runing jobs</description>
-  <name>Backup and interrupt job pluign</name>
-  <url>https://wiki.jenkins-ci.org/display/JENKINS/Backup+and+interrupt+running+job+plugin</url>
+  <name>Backup and interrupt job plugin</name>
+  <url>https://plugins.jenkins.io/backup-interrupt-plugin/</url>
   
   <developers>
     <developer>
@@ -21,41 +21,59 @@
       <email>lvotypko@redhat.com</email>
     </developer>
   </developers>
- 
-<build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <goals>deploy</goals>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
-<distributionManagement>
-    <repository>
-      <id>maven.jenkins-ci.org</id>
-      <url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
-    </repository>
-  </distributionManagement>
+  <licenses>
+    <license>
+      <name>The MIT license</name>
+      <url>https://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <repositories>
     <repository>
       <id>repo.jenkins-ci.org</id>
-      <url>http://repo.jenkins-ci.org/public/</url>
+      <url>https://repo.jenkins-ci.org/public/</url>
     </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
       <id>repo.jenkins-ci.org</id>
-      <url>http://repo.jenkins-ci.org/public/</url>
+      <url>https://repo.jenkins-ci.org/public/</url>
     </pluginRepository>
   </pluginRepositories>
+
+  <dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>io.jenkins.tools.bom</groupId>
+      <artifactId>bom-2.346.x</artifactId>
+      <version>1607.va_c1576527071</version>
+      <scope>import</scope>
+      <type>pom</type>
+    </dependency>
+  </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>matrix-project</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.jenkins.plugins</groupId>
+      <artifactId>ionicons-api</artifactId>
+      <version>22.v868b_0c347756</version>
+    </dependency>
+  </dependencies>
+
+  <properties>
+    <jenkins.version>2.346.1</jenkins.version>
+  </properties>
   
-    <scm>
-    <connection>scm:git:ssh://github.com/jenkinsci/backup-jobs-plugin.git</connection>
+  <scm>
+    <connection>scm:git:https://github.com/jenkinsci/backup-jobs-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/jenkinsci/backup-jobs-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/backup-jobs-plugin</url>
   </scm>
