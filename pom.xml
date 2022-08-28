@@ -69,6 +69,7 @@
     <connection>scm:git:https://github.com/jenkinsci/backup-jobs-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/jenkinsci/backup-jobs-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/backup-jobs-plugin</url>
+    <tag>${scmTag}</tag>
   </scm>
   
 </project>
