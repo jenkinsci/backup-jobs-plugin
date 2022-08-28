@@ -7,12 +7,8 @@ package org.jenkinsci.plugins.backup;
 import hudson.matrix.MatrixConfiguration;
 import hudson.model.AbstractProject;
 import hudson.model.Cause;
-import hudson.model.Item;
 import hudson.model.Job;
 import hudson.model.ParametersAction;
-
-import hudson.model.Project;
-import jenkins.model.Jenkins;
 
 /**
  *
