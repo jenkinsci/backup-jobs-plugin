@@ -56,7 +56,7 @@
     <dependency>
       <groupId>io.jenkins.plugins</groupId>
       <artifactId>ionicons-api</artifactId>
-      <version>22.v868b_0c347756</version>
+      <version>28.va_f3a_84439e5f</version>
     </dependency>
   </dependencies>
 
